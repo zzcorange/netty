@@ -12,7 +12,7 @@ public class TimeEncoder extends ChannelOutboundHandlerAdapter {
     public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) {
         ByteBuf encoded = ctx.alloc().buffer(1);
         encoded.writeCharSequence(msg.toString(), Charset.forName("utf8"));
-        System.out.println("encodeMessage:"+msg);
+//        System.out.println("encodeMessage:"+msg);
         ctx.write(encoded, promise); // (1)
     }
 }

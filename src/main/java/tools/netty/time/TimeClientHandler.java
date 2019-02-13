@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleStateEvent;
+import tools.netty.entity.Message;
 
 public class TimeClientHandler extends ChannelInboundHandlerAdapter {
     private ByteBuf buf;
@@ -27,7 +28,7 @@ public class TimeClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         System.out.println("客户端接收到的返回："+msg);
-        ctx.close();
+//        ctx.close();
     }
 
     @Override
@@ -63,11 +64,12 @@ public class TimeClientHandler extends ChannelInboundHandlerAdapter {
     }
 
     protected void handlerAllIdle(ChannelHandlerContext ctx) {
-        System.err.println("---ALL_IDLE---");
+        ctx.writeAndFlush(new Message("ping",TimeClient.clientId).toString());
     }
 
     protected void handlerWriterIdle(ChannelHandlerContext ctx) {
         System.err.println("---WRITER_IDLE---");
+
     }
 
 

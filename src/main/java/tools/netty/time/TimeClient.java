@@ -6,13 +6,14 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.timeout.IdleStateHandler;
+import tools.netty.entity.Message;
 
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class TimeClient {
     private NioEventLoopGroup worker = new NioEventLoopGroup();
-
+    public static int  clientId = 1;
     private static Channel channel;
 
     private static Bootstrap b;
@@ -98,7 +99,7 @@ public class TimeClient {
             if (channel != null && channel.isActive()) {
                 //获取一个键盘扫描器
                 String nextLine = sc.nextLine();
-                channel.writeAndFlush("i="+i);
+                channel.writeAndFlush(new Message("i="+i,clientId).toString());
             }
         }
     }
@@ -106,7 +107,7 @@ public class TimeClient {
         try{
             TimeClient timeClient = new TimeClient();
             timeClient.start();
-            timeClient.sendData();;
+            timeClient.sendData();
         } catch (Exception e){
             e.printStackTrace();
             System.exit(-1);

@@ -15,7 +15,7 @@ public class TimeDecoder extends ByteToMessageDecoder { // (1)
         }
         String data = in.readBytes(in.readableBytes()).toString(Charset.forName("utf-8"));
         out.add(data);
-        System.out.println("decode出来的结果："+data);
+//        System.out.println("decode出来的结果："+data);
         ByteBuf frame = in.retainedDuplicate();
         in.skipBytes(in.readableBytes());
     }

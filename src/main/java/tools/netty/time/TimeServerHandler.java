@@ -2,6 +2,7 @@ package tools.netty.time;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import net.sf.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +26,7 @@ public class TimeServerHandler extends ChannelInboundHandlerAdapter {
 //                e.printStackTrace();
 //            }
 //        }
+
         System.out.println("客户端连接成功");
 //        int i=0;
 //        while (true){
@@ -46,6 +48,16 @@ public class TimeServerHandler extends ChannelInboundHandlerAdapter {
     }
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
+        if(((String)msg).indexOf("ping")==-1)
         System.out.println("服务端收到的返回："+(String)msg);
+        JSONObject jsonObject = JSONObject.fromObject((String)msg);
+        TimeServer.channelMap.put(jsonObject.get("clientId").toString(),ctx.channel());
+    }
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        //channel失效，从Map中移除
+        System.out.println("链接失效了");
+        TimeServer.channelMap.values().remove(ctx.channel());
+
     }
 }
