@@ -5,6 +5,9 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.serialization.ClassResolvers;
+import io.netty.handler.codec.serialization.ObjectDecoder;
+import io.netty.handler.codec.serialization.ObjectEncoder;
 import io.netty.handler.timeout.IdleStateHandler;
 import tools.netty.entity.Message;
 
@@ -69,8 +72,11 @@ public class TimeClient {
                 b.handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     public void initChannel(SocketChannel ch) throws Exception {
-                        ch.pipeline().addLast(new TimeDecoder())
-                                .addLast(new TimeEncoder())
+                        ch.pipeline()
+//                                .addLast(new TimeDecoder())
+//                                .addLast(new TimeEncoder())
+                                .addLast(new ObjectEncoder())
+                                .addLast(new ObjectDecoder(ClassResolvers.cacheDisabled(null)))
                                 .addLast(new IdleStateHandler(0,0,5))
                                 .addLast(new TimeClientHandler(TimeClient.this));
                     }
@@ -99,7 +105,7 @@ public class TimeClient {
             if (channel != null && channel.isActive()) {
                 //获取一个键盘扫描器
                 String nextLine = sc.nextLine();
-                channel.writeAndFlush(new Message("i="+i,clientId).toString());
+                channel.writeAndFlush(new Message("i="+i,clientId));
             }
         }
     }

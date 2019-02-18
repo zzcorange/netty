@@ -2,9 +2,12 @@ package tools.netty.entity;
 
 import net.sf.json.JSONObject;
 
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Message {
+public class Message implements Serializable {
     private static AtomicInteger temp = new AtomicInteger(0);
     private int clientId;
     private String message;
@@ -36,5 +39,12 @@ public class Message {
         jsonObject.put("clientId",clientId);
         jsonObject.put("message",message);
         return jsonObject.toString();
+    }
+
+    public static void main(String[] args) {
+        Map<String,String> map = new HashMap<String,String>();
+        map.put("a","b");
+        map.put("c","d");
+        System.out.println(JSONObject.fromObject(map).toString());
     }
 }

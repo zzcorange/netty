@@ -64,7 +64,7 @@ public class TimeClientHandler extends ChannelInboundHandlerAdapter {
     }
 
     protected void handlerAllIdle(ChannelHandlerContext ctx) {
-        ctx.writeAndFlush(new Message("ping",TimeClient.clientId).toString());
+        ctx.writeAndFlush(new Message("ping",TimeClient.clientId));
     }
 
     protected void handlerWriterIdle(ChannelHandlerContext ctx) {

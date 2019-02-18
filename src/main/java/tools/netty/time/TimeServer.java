@@ -5,6 +5,9 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.serialization.ClassResolvers;
+import io.netty.handler.codec.serialization.ObjectDecoder;
+import io.netty.handler.codec.serialization.ObjectEncoder;
 import io.netty.handler.timeout.IdleStateHandler;
 
 import java.util.HashMap;
@@ -34,8 +37,11 @@ public class TimeServer {
                         @Override
                         public void initChannel(SocketChannel ch) throws Exception {
 
-                            ch.pipeline().addLast(new TimeEncoder())
-                                    .addLast(new TimeDecoder())
+                            ch.pipeline()
+//                                .addLast(new TimeDecoder())
+//                                .addLast(new TimeEncoder())
+                                    .addLast(new ObjectEncoder())
+                                    .addLast(new ObjectDecoder(ClassResolvers.cacheDisabled(null)))
                                     .addLast(new IdleStateHandler(10,0,0))
                                     .addLast(new TimeServerHandler());
                         }

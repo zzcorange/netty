@@ -3,6 +3,7 @@ package tools.netty.time;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import net.sf.json.JSONObject;
+import tools.netty.entity.Message;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,10 +49,10 @@ public class TimeServerHandler extends ChannelInboundHandlerAdapter {
     }
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        if(((String)msg).indexOf("ping")==-1)
-        System.out.println("服务端收到的返回："+(String)msg);
-        JSONObject jsonObject = JSONObject.fromObject((String)msg);
-        TimeServer.channelMap.put(jsonObject.get("clientId").toString(),ctx.channel());
+        if(((Message)msg).getMessage().indexOf("ping")==-1)
+        System.out.println("服务端收到的返回："+((Message)msg).toString());
+        JSONObject jsonObject = JSONObject.fromObject((Message)msg);
+        TimeServer.channelMap.put(((Message) msg).getClientId()+"",ctx.channel());
     }
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
